@@ -98,10 +98,8 @@ const editUser = async (req, res) => {
 const deleteUser = async (req, res) => {
 
     const id = req.params.id;
-    console.log(id)
 
     try {
-
 
         await admin.auth().deleteUser(id)
 
@@ -120,10 +118,31 @@ const deleteUser = async (req, res) => {
     }
 };
 
+const resetPassword = async (req, res) => {
+    const { email } = req.body;
+
+    try {
+        await sendPasswordResetEmail(authFb, email);
+
+        return res.status(200).json({
+            ok: true,
+            msg: 'Correo de recuperación de contraseña enviado'
+        });
+
+    } catch (error) {
+        return res.status(500).json({
+            ok: false,
+            msg: 'Error al enviar el correo de recuperación de contraseña',
+            error: error.code
+        });
+    }
+};
+
 module.exports = {
     signIn,
     logOut,
     signUp,
     editUser,
-    deleteUser
+    deleteUser,
+    resetPassword
 };
