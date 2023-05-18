@@ -9,10 +9,8 @@ const authFb = getAuth(firebaseApp)
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)
 });
-console.log(authFb)
-module.exports= {
 
+module.exports= {
     authFb,
-    admin
-  
-  }
+    admin 
+}
