@@ -86,9 +86,9 @@ const editUser = async (req, res) => {
 
         const id = req.params.id;
         const body = req.body;
-
-        const user = await User.findOneAndUpdate({ _id: id }, { $set: body });
-        await admin.auth().updateUser(mongoUser.uid, {
+     
+        const user = await editUserM(id, body)
+        await admin.auth().updateUser(user.uid, {
             email: body.email,
             password: body.password
         });
@@ -113,12 +113,14 @@ const deleteUser = async (req, res) => {
     const id = req.params.id;
 
     try {
-
-        await admin.auth().deleteUser(id)
+        
+        const user = await User.findOneAndDelete({ _id: id });
+        await admin.auth().deleteUser(user.uid)
 
         return res.status(200).json({
-            ok: true,
-            msg: 'Usuario eliminado'
+            ok:true,
+            msg: 'Usuario eliminado correctamente',
+            user
         })
 
     } catch (error) {
@@ -132,6 +134,7 @@ const deleteUser = async (req, res) => {
 };
 
 const resetPassword = async (req, res) => {
+
     const { email } = req.body;
 
     try {

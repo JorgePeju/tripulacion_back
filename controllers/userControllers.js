@@ -32,20 +32,15 @@ const createUser = async (userFB) => {
     }
 };
 
-const editUserM = async (req, res) => {
+const editUserM = async (id, body) => {
 
-    const id = req.params.id;
-    const body = req.body;
- 
+
     try {
-        
+      
         await User.findOneAndUpdate({ _id: id }, { $set: body });
         const data = await User.findOne({_id: id});
-      
-        return res.status(200).json({
-            ok:true,
-            data,  
-        }) 
+        
+        return data
 
     } catch (error) {
 
