@@ -47,7 +47,7 @@ const editEntry = async (req, res) => {
 };
 
 const createEntry = async (req, res) => {
-   console.log(req.body)
+  
     const newEntry = new Entry(req.body);
   
     try {

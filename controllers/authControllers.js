@@ -8,7 +8,7 @@ const signUp = async (req, res) => {
 
     try {
 
-        const { email, password } = req.body
+        const { email, password, username, ccaa, userlastname } = req.body
         const userCredentials = await createUserWithEmailAndPassword(authFb, email, password)
 
         const newUser = {
@@ -18,6 +18,7 @@ const signUp = async (req, res) => {
             ccaa: ccaa,
             uid: userCredentials.user.uid
         }
+        console.log(newUser)
         const user =  await createUser(newUser)
 
         return res.status(200).json({
@@ -41,11 +42,12 @@ const signIn = async (req, res) => {
 
     try {
 
-        const userCredentials = await signInWithEmailAndPassword(authFb, email, password);
+        await signInWithEmailAndPassword(authFb, email, password);
+        const user = await getUserEmail(email)
         
         return res.status(200).json({
             ok: true,
-            user: userCredentials.user
+            user: user
         })
 
     } catch (error) {
