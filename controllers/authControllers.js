@@ -1,18 +1,28 @@
 const { createUserWithEmailAndPassword, signOut, signInWithEmailAndPassword, GoogleAuthProvider, FacebookAuthProvider, OAuthProvider, signInWithPopup } = require('firebase/auth');
 const { authFb } = require('../helpers/firebase')
 const { admin } = require('../helpers/firebase');
+const User = require('../models/users');
+const {createUser, editUserM, getUserEmail} = require('./userControllers')
 
 const signUp = async (req, res) => {
 
     try {
 
         const { email, password } = req.body
-
         const userCredentials = await createUserWithEmailAndPassword(authFb, email, password)
+
+        const newUser = {
+            email: email,
+            username: username,
+            userlastname: userlastname,
+            ccaa: ccaa,
+            uid: userCredentials.user.uid
+        }
+        const user =  await createUser(newUser)
 
         return res.status(200).json({
             ok: true,
-            user: userCredentials.user
+            user: user
         })
 
     } catch (error) {
@@ -30,9 +40,9 @@ const signIn = async (req, res) => {
     const { email, password } = req.body
 
     try {
+
         const userCredentials = await signInWithEmailAndPassword(authFb, email, password);
-
-
+        
         return res.status(200).json({
             ok: true,
             user: userCredentials.user
