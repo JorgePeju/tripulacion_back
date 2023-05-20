@@ -3,7 +3,7 @@ const User = require('../models/users');
 const getUserEmail = async (req, res) => {
 
     const email = req;
-    
+    console.log(email)
     try {
 
         const user = await User.findOne({email: email});
@@ -39,7 +39,7 @@ const editUserM = async (req, res) => {
  
     try {
         
-        const user = await User.findOneAndUpdate({ _id: id }, { $set: body });
+        await User.findOneAndUpdate({ _id: id }, { $set: body });
         const data = await User.findOne({_id: id});
       
         return res.status(200).json({

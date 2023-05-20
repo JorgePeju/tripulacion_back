@@ -2,7 +2,7 @@ const { createUserWithEmailAndPassword, signOut, signInWithEmailAndPassword, Goo
 const { authFb } = require('../helpers/firebase')
 const { admin } = require('../helpers/firebase');
 const User = require('../models/users');
-const {createUser, editUserM, getUserEmail} = require('./userControllers')
+const { createUser, editUserM, getUserEmail } = require('./userControllers')
 
 const signUp = async (req, res) => {
 
@@ -19,7 +19,7 @@ const signUp = async (req, res) => {
             uid: userCredentials.user.uid
         }
         console.log(newUser)
-        const user =  await createUser(newUser)
+        const user = await createUser(newUser)
 
         return res.status(200).json({
             ok: true,
@@ -44,7 +44,7 @@ const signIn = async (req, res) => {
 
         await signInWithEmailAndPassword(authFb, email, password);
         const user = await getUserEmail(email)
-        
+
         return res.status(200).json({
             ok: true,
             user: user
@@ -81,20 +81,21 @@ const logOut = async (req, res) => {
 };
 
 const editUser = async (req, res) => {
-
+  
     try {
 
-        const uid = req.params.id;
+        const id = req.params.id;
         const body = req.body;
 
-        const editedUser = await admin.auth().updateUser(uid, {
+        const user = await User.findOneAndUpdate({ _id: id }, { $set: body });
+        await admin.auth().updateUser(mongoUser.uid, {
             email: body.email,
             password: body.password
         });
-
+      
         return res.status(200).json({
             ok: true,
-            user: editedUser.user,
+            user: user
         })
 
     } catch (error) {
@@ -102,7 +103,7 @@ const editUser = async (req, res) => {
         return res.status(500).json({
             ok: false,
             msg: "Error al editar el usuario",
-            error: error.code
+            error: error
         });
     };
 };
@@ -228,5 +229,5 @@ module.exports = {
     signInGoogle,
     signInFacebook,
     signInApple
-    
+
 };

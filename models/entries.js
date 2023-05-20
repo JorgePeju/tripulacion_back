@@ -13,7 +13,7 @@ const EntrySchema = new Schema({
         question8: String,
     },
     status:{
-        poiticsVisited: Boolean,
+        politicsVisited: Boolean,
         droughtVisited:Boolean,
         contaminationVisited: Boolean
     },
