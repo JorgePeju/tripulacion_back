@@ -113,7 +113,7 @@ const deleteUser = async (req, res) => {
     const id = req.params.id;
 
     try {
-        
+
         const user = await User.findOneAndDelete({ _id: id });
         await admin.auth().deleteUser(user.uid)
 
@@ -146,6 +146,7 @@ const resetPassword = async (req, res) => {
         });
 
     } catch (error) {
+        
         return res.status(500).json({
             ok: false,
             msg: 'Error al enviar el correo de recuperación de contraseña',
@@ -161,6 +162,7 @@ const signInGoogle = async (req, res) => {
     try {
 
         const result = await signInWithPopup(authFb, provider);
+        console.log(result)
         return res.status(200).json({
             ok: true,
             user: result.user

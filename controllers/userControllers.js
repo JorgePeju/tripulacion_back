@@ -3,11 +3,10 @@ const User = require('../models/users');
 const getUserEmail = async (req, res) => {
 
     const email = req;
-    console.log(email)
+ 
     try {
 
         const user = await User.findOne({email: email});
-        
         return user
 
     } catch (error) {
