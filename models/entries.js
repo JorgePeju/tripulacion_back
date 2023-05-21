@@ -17,10 +17,10 @@ const EntrySchema = new Schema({
         droughtVisited:Boolean,
         contaminationVisited: Boolean
     },
-    // user: {
-    //     type: Schema.Types.ObjectId,
-    //     ref: 'User',
-    // }
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+    }
 
 });
 
