@@ -50,10 +50,29 @@ const editUserM = async (id, body) => {
     };
 };
 
+const getUser = async (req, res) => {
+
+    const id = req.body._id;
+ 
+    try {
+
+        const user = await User.findOne({id: id});
+        return res.status(200).json({
+            ok: true,
+            user: user
+        })
+
+    } catch (error) {
+
+        return 'No se ha encontrado al usuario';
+    }
+};
+
 
 
 module.exports = {
     createUser,
     editUserM,
-    getUserEmail
+    getUserEmail,
+    getUser
 }

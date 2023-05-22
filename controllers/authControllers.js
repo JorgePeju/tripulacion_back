@@ -1,4 +1,4 @@
-const { createUserWithEmailAndPassword, signOut, signInWithEmailAndPassword, GoogleAuthProvider, FacebookAuthProvider, OAuthProvider, signInWithPopup } = require('firebase/auth');
+const { createUserWithEmailAndPassword, signOut, signInWithEmailAndPassword} = require('firebase/auth');
 const { authFb } = require('../helpers/firebase')
 const { admin } = require('../helpers/firebase');
 const User = require('../models/users');
@@ -155,73 +155,7 @@ const resetPassword = async (req, res) => {
     }
 };
 
-const signInGoogle = async (req, res) => {
 
-    const provider = new GoogleAuthProvider();
-
-    try {
-
-        const result = await signInWithPopup(authFb, provider);
-        console.log(result)
-        return res.status(200).json({
-            ok: true,
-            user: result.user
-        })
-
-    } catch (error) {
-
-        return res.status(500).json({
-            ok: false,
-            msg: "Error al iniciar sesión con Google",
-            error: error.code
-        });
-
-    }
-};
-
-const signInFacebook = async (req, res) => {
-
-    const provider = new FacebookAuthProvider();
-
-    try {
-
-        const result = await signInWithPopup(authFb, provider);
-        return res.status(200).json({
-            ok: true,
-            user: result.user
-        })
-
-    } catch (error) {
-
-        return res.status(500).json({
-            ok: false,
-            msg: "Error al iniciar sesión con Facebook",
-            error: error.code
-        });
-    }
-};
-
-const signInApple = async (req, res) => {
-
-    const provider = new OAuthProvider('apple.com');
-
-    try {
-
-        const result = await signInWithPopup(authFb, provider);
-        return res.status(200).json({
-            ok: true,
-            user: result.user
-        })
-
-    } catch (error) {
-
-        return res.status(500).json({
-            ok: false,
-            msg: "Error al iniciar sesión con Apple",
-            error: error.code
-        });
-    }
-};
 
 module.exports = {
 
@@ -230,9 +164,6 @@ module.exports = {
     signUp,
     editUser,
     deleteUser,
-    resetPassword,
-    signInGoogle,
-    signInFacebook,
-    signInApple
+    resetPassword
 
 };
