@@ -22,27 +22,36 @@ const getEntries = async (req, res) => {
 };
 
 const getEntry = async (req, res) => {
-
     const id = req.params.id;
 
     try {
+        let entry = await Entry.findById(id).populate('user', 'email username userlastname ccaa');
 
-        const entry = await Entry.findById(id).populate('user', 'email username userlastname ccaa');
+        if (!entry) {
+            entry = await Entry.findOne({ user: id }).populate('user', 'email username userlastname ccaa');
+        }
 
-        return res.status(200).json({
-            ok: true,
-            msg: "Entrada encontrada",
-            data: entry,
-        });
-
+        if (entry) {
+            return res.status(200).json({
+                ok: true,
+                msg: "Entrada encontrada",
+                data: entry,
+            });
+        } else {
+            return res.status(404).json({
+                ok: false,
+                msg: "Entrada no encontrada",
+            });
+        }
+        
     } catch (error) {
-
         return res.status(500).json({
             ok: false,
             msg: "No se ha podido acceder a la entrada",
         });
     }
 };
+
 
 const editEntry = async (req, res) => {
 
@@ -116,31 +125,10 @@ const deleteEntry = async (req, res) => {
     }
 };
 
-const getEntryByUserId = async (req, res) => {
-    const userId = req.params.id;
-
-    try {
-        const entries = await Entry.find({ user: userId }).populate('user', 'email username userlastname ccaa');
-
-        return res.status(200).json({
-            ok: true,
-            msg: "Entrada(s) encontrada(s)",
-            data: entries,
-        });
-
-    } catch (error) {
-        return res.status(500).json({
-            ok: false,
-            msg: "No se ha podido acceder a la entrada",
-        });
-    }
-};
-
 module.exports = {
     getEntries,
     createEntry,
     editEntry,
     deleteEntry,
-    getEntry,
-    getEntryByUserId
+    getEntry
 }
