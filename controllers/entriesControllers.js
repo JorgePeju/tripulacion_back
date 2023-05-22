@@ -6,8 +6,6 @@ const getEntries = async (req, res) => {
 
         const entry = await Entry.find().populate('user', 'email username userlastname ccaa');
 
-        // 
-
         return res.status(200).json({
             ok: true,
             data: entry
