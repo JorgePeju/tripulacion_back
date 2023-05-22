@@ -13,10 +13,13 @@ const EntrySchema = new Schema({
         question8: String,
     },
     status:{
-        politicsVisited: Boolean,
-        droughtVisited:Boolean,
-        contaminationVisited: Boolean
+        politicasAzules: Boolean,
+        sequia: Boolean,
+        costeSuministro: Boolean,
+        reutilizacionAgua: Boolean,
+        embalses: Boolean,
     },
+    score: Number,
     user: {
         type: Schema.Types.ObjectId,
         ref: 'User',
