@@ -21,6 +21,29 @@ const getEntries = async (req, res) => {
     }
 };
 
+const getEntry = async (req, res) => {
+
+    const id = req.params.id;
+
+    try {
+
+        const entry = await Entry.findById(id).populate('user', 'email username userlastname ccaa');
+
+        return res.status(200).json({
+            ok: true,
+            msg: "Entrada encontrada",
+            data: entry,
+        });
+
+    } catch (error) {
+
+        return res.status(500).json({
+            ok: false,
+            msg: "No se ha podido acceder a la entrada",
+        });
+    }
+};
+
 const editEntry = async (req, res) => {
 
     const id = req.params.id;
@@ -98,4 +121,5 @@ module.exports = {
     createEntry,
     editEntry,
     deleteEntry,
+    getEntry
 }
