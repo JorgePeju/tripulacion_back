@@ -1,5 +1,10 @@
 # tripulacion_back
 
+# Enlace al repositorio front:
+````
+https://github.com/dorian-rose/tripulacion_front
+````
+
 # Enlace del despliegue de la API:
 
 ````
