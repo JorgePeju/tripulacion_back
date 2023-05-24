@@ -83,6 +83,10 @@ const editEntry = async (req, res) => {
     try {
      
         const entry = await Entry.findOneAndUpdate({user: id }, { $set: body });
+        
+        if (!entry) {
+            entry = await Entry.findOneAndUpdate({ _id: id }, { $set: body });
+        }
 
         return res.status(200).json({
             ok: true,
