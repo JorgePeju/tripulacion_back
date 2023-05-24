@@ -18,6 +18,10 @@ const UserSchema = new Schema({
         type: String,
         trim: true
     },
+    city:{
+        type: String,
+        trim: true
+    },
     uid: {
         type: String,
         
