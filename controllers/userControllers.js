@@ -82,11 +82,12 @@ const editUserM = async (id, body) => {
  */
 const getUser = async (req, res) => {
 
-    const id = req.body._id;
- 
+    const id = req.params.id;
+   
     try {
 
-        const user = await User.findOne({id: id});
+        const user = await User.findOne({_id: id});
+        console
         return res.status(200).json({
             ok: true,
             user: user
