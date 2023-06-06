@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: entriesControllers.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: entriesControllers.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const Entry = require('../models/entries');
+/**
+ * Obtener todas las entradas de la base de datos.
+ * @function getEntries
+ * @async
+ * @param {Object} req Objeto de solicitud.
+ * @param {Object} res Objeto de respuesta
+ * @return {json}
+ */
+const getEntries = async (req, res) => {
+
+    try {
+
+        const entry = await Entry.find().populate('user', 'email username userlastname ccaa');
+
+        return res.status(200).json({
+            ok: true,
+            data: entry
+        });
+
+
+    } catch (error) {
+
+        return res.status(500).json({
+            ok: false,
+            msg: "Error al obtener la entrada",
+        });
+    }
+};
+
+/**
+ * Obtener una entrada o un usuario si existe su entrada de la base de datos por su ID.
+ * @function getEntry
+ * @async
+ * @param {Object} req Objeto de solicitud.
+ * @param {Object} res Objeto de respuesta
+ * @return {json}
+ */
+const getEntry = async (req, res) => {
+    const id = req.params.id;
+
+    try {
+        let entry = await Entry.findById(id).populate('user', 'email username userlastname ccaa');
+
+        if (!entry) {
+            entry = await Entry.findOne({ user: id }).populate('user', 'email username userlastname ccaa');
+        }
+
+        if (entry) {
+            return res.status(200).json({
+                ok: true,
+                msg: "Entrada encontrada",
+                data: entry,
+            });
+        } else {
+            return res.status(404).json({
+                ok: false,
+                msg: "Entrada no encontrada",
+            });
+        }
+        
+    } catch (error) {
+        return res.status(500).json({
+            ok: false,
+            msg: "No se ha podido acceder a la entrada",
+        });
+    }
+};
+
+/**
+ * Obtener una entrada de la base de datos por su ID.
+ * @function editEntry
+ * @async
+ * @param {Object} req Objeto de solicitud.
+ * @param {Object} res Objeto de respuesta
+ * @return {json}
+ */
+const editEntry = async (req, res) => {
+
+    const id = req.params.id;
+    const body = req.body;
+
+    try {
+     
+        const entry = await Entry.findOneAndUpdate({ _id: id }, { $set: body });
+
+        return res.status(200).json({
+            ok: true,
+            msg: 'Entrada actualizada.',
+            entry
+        });
+
+
+    } catch (error) {
+
+        return res.status(500).json({
+            ok: false,
+            msg: "Error al editar la entrada",
+        });
+    };
+};
+
+/**
+ * Crear una nueva entrada en la base de datos.
+ * @function createEntry
+ * @async
+ * @param {Object} req Objeto de solicitud.
+ * @param {Object} res Objeto de respuesta
+ * @return {json}
+ */
+const createEntry = async (req, res) => {
+  
+    const newEntry = new Entry(req.body);
+  
+    try {
+
+        const entry = await newEntry.save();
+
+        return res.status(201).json({
+            ok: true,
+            msg: 'Entrada creada.',
+            entry
+        });
+
+    } catch (error) {
+
+        return res.status(500).json({
+            ok: false,
+            msg: "Error al crear la entrada",
+        });
+    }
+};
+
+/**
+ * Eliminar una entrada de la base de datos por su ID.
+ * @function deleteEntry
+ * @async
+ * @param {Object} req Objeto de solicitud.
+ * @param {Object} res Objeto de respuesta
+ * @return {json}
+ */
+const deleteEntry = async (req, res) => {
+
+    const id = req.params.id;
+ 
+    try {
+
+        const entry = await Entry.findOneAndDelete({ _id: id });
+
+        return res.status(200).json({
+            ok: true,
+            msg: 'Entrada eliminada correctamente.',
+            entry
+        });
+
+
+    } catch (error) {
+
+        return res.status(500).json({
+            ok: false,
+            msg: 'Error al borrar la entrada.'
+        });
+    }
+};
+
+module.exports = {
+    getEntries,
+    createEntry,
+    editEntry,
+    deleteEntry,
+    getEntry
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#createEntry">createEntry</a></li><li><a href="global.html#createUser">createUser</a></li><li><a href="global.html#deleteEntry">deleteEntry</a></li><li><a href="global.html#deleteUser">deleteUser</a></li><li><a href="global.html#editEntry">editEntry</a></li><li><a href="global.html#editUser">editUser</a></li><li><a href="global.html#getEntries">getEntries</a></li><li><a href="global.html#getEntry">getEntry</a></li><li><a href="global.html#getUser">getUser</a></li><li><a href="global.html#getUserEmail">getUserEmail</a></li><li><a href="global.html#logOut">logOut</a></li><li><a href="global.html#resetPassword">resetPassword</a></li><li><a href="global.html#signIn">signIn</a></li><li><a href="global.html#signUp">signUp</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Tue May 23 2023 11:54:34 GMT+0200 (hora de verano de Europa central)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
